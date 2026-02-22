@@ -8,13 +8,16 @@ function App() {
 
   return (
     <GameWrapper>
-      {page === "start" && (
-        <StartPage onConfig={() => setPage("config")} />
-      )}
+    {page === "start" && (
+      <StartPage onConfig={() => setPage("config")} />
+    )}
 
-      {page === "config" && (
-        <ConfigPage onBack={() => setPage("start")} />
-      )}
+    {page === "config" && (
+      <ConfigPage
+        onBack={() => setPage("start")}
+        onConfirm={() => setPage("start")}
+      />
+    )}
     </GameWrapper>
   )
 }

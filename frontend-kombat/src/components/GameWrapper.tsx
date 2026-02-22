@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 
 const BASE_WIDTH = 1920
-
 const BASE_HEIGHT = 1024
 
 interface Props {
@@ -16,7 +15,7 @@ export default function GameWrapper({ children }: Props) {
       const scaleX = window.innerWidth / BASE_WIDTH
       const scaleY = window.innerHeight / BASE_HEIGHT
 
-      // ใช้ max เพื่อให้เต็มจอเสมอ (ไม่มีขอบดำ)
+      // ใช้ min ถ้าต้องการ fit จอแบบไม่ครอป
       setScale(Math.max(scaleX, scaleY))
     }
 
@@ -31,12 +30,11 @@ export default function GameWrapper({ children }: Props) {
         style={{
           width: BASE_WIDTH,
           height: BASE_HEIGHT,
-          transform: `scale(${scale})`,
-          transformOrigin: "center center",
           position: "absolute",
           top: "50%",
           left: "50%",
-          translate: "-50% -50%",
+          transform: `translate(-50%, -50%) scale(${scale})`,
+          transformOrigin: "center center",
         }}
       >
         {children}

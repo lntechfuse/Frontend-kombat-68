@@ -5,19 +5,20 @@ interface Props {
 export default function ConfirmButton({ onClick }: Props) {
   return (
     <button
+      type="button"   // 👈 เพิ่มบรรทัดนี้
       onClick={onClick}
       className="
-        mt-10
+        mt-1
         w-[220px]
         h-[55px]
         rounded-full
-        text-black
+        text-white
         font-semibold
         text-lg
-        bg-yellow-400
-        hover:scale-105
+        bg-gradient-to-r from-[#FF3D00] to-[#ECDB46]
+        hover:from-green-500 hover:to-green-500
         transition-all
-        duration-200
+        duration-300
       "
     >
       Confirm

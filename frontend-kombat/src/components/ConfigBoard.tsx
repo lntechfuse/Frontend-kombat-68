@@ -6,7 +6,7 @@ interface Props {
 
 export default function ConfigBoard({ children }: Props) {
   return (
-    <div className="relative w-[750px] h-[500px] flex items-center justify-center mb-8">
+  <div className="relative w-full aspect-[3/2] flex items-center justify-center">
 
       {/* Board Image */}
       <img
@@ -17,7 +17,11 @@ export default function ConfigBoard({ children }: Props) {
       />
 
       {/* Content */}
-      <div className="relative z-10 px-12 text-center">
+      <div className="relative z-10 
+                      w-[80%] 
+                      text-center 
+                      px-4 md:px-10
+                      text-sm md:text-lg">
         {children}
       </div>
 
