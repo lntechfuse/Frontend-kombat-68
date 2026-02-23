@@ -4,10 +4,12 @@ import { useState } from "react"
 import ConfirmButton from "../components/ConfirmButton"
 import ArrowButton from "../components/ArrowButton"
 
+// API
+import { setCharacter } from "../api/gameApi"
+
 // Assets
 import bg from "../assets/images/background-config.png"
 import logo from "../assets/images/logo.png"
-
 import humanImg from "../assets/images/ui-human.png"
 import demonImg from "../assets/images/ui-demon.png"
 
@@ -16,9 +18,10 @@ interface Props {
   onConfirm: (uiType: "HUMAN" | "DEMON") => void
 }
 
-export default function SelectUIPage({ onBack, onConfirm }: Props) {
+export default function SelectCharacterPage({ onBack, onConfirm }: Props) {
   const [selected, setSelected] = useState<"HUMAN" | "DEMON" | null>(null)
   const [shake, setShake] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const triggerSelect = (type: "HUMAN" | "DEMON") => {
     setSelected(type)
@@ -26,12 +29,26 @@ export default function SelectUIPage({ onBack, onConfirm }: Props) {
 
     setTimeout(() => {
       setShake(false)
-    }, 200) // เวลาเดียวกับ MinionType
+    }, 200)
   }
 
-  const handleConfirm = () => {
-    if (!selected) return
-    onConfirm(selected)
+  const handleConfirm = async () => {
+    if (!selected || loading) return
+
+    try {
+      setLoading(true)
+
+      // 🔥 ยิง API ไป backend
+      await setCharacter(selected)
+
+      // ไปหน้าถัดไป
+      onConfirm(selected)
+    } catch (err) {
+      console.error(err)
+      alert("Failed to select UI")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -42,21 +59,21 @@ export default function SelectUIPage({ onBack, onConfirm }: Props) {
       `}
     >
       {/* Shake Animation */}
-<style>
-  {`
-    @keyframes shake-soft {
-      0%   { transform: translate(0px, 0px); }
-      25%  { transform: translate(-0.5px, 0.5px); }
-      50%  { transform: translate(0.5px, -0.5px); }
-      75%  { transform: translate(-0.5px, 0px); }
-      100% { transform: translate(0px, 0px); }
-    }
+      <style>
+        {`
+          @keyframes shake-soft {
+            0%   { transform: translate(0px, 0px); }
+            25%  { transform: translate(-0.5px, 0.5px); }
+            50%  { transform: translate(0.5px, -0.5px); }
+            75%  { transform: translate(-0.5px, 0px); }
+            100% { transform: translate(0px, 0px); }
+          }
 
-    .animate-shake {
-      animation: shake-soft 0.2s ease-out;
-    }
-  `}
-</style>
+          .animate-shake {
+            animation: shake-soft 0.2s ease-out;
+          }
+        `}
+      </style>
 
       {/* Background */}
       <img
@@ -178,7 +195,10 @@ export default function SelectUIPage({ onBack, onConfirm }: Props) {
 
         {/* Confirm */}
         <div className="mt-12">
-          <ConfirmButton onClick={handleConfirm} />
+          <ConfirmButton
+            onClick={handleConfirm}
+            disabled={!selected || loading}
+          />
         </div>
       </div>
 

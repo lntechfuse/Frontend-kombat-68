@@ -1,3 +1,18 @@
+export const setCharacter = async (
+  character: "HUMAN" | "DEMON"
+) => {
+  const res = await fetch("http://localhost:8080/api/game/character", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ character }),
+  })
+
+  if (!res.ok) {
+    throw new Error("Failed to set character")
+  }
+
+  return res.json()
+}
 // -------------------- MINION TYPE COUNT --------------------
 
 export const setMinionTypeCount = async (count: number) => {
